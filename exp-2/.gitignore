@@ -1,0 +1,14 @@
+# Terraform working files and state may contain resource IDs and sensitive values.
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Local, machine-specific variable values. Use terraform.tfvars.example instead.
+terraform.tfvars
+*.tfvars.json
+
+# Generated during the experiment.
+dependency-graph.svg
+tfplan
