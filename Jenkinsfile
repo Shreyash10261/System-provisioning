@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
     options {
         ansiColor('xterm')
         timestamps()
@@ -54,10 +58,10 @@ pipeline {
                 dir('exp-2') {
                     sh 'terraform plan -input=false -out=tfplan'
                     sh 'terraform show -no-color tfplan > tfplan.txt'
-
-                    archiveArtifacts artifacts: 'exp-2/tfplan, exp-2/tfplan.txt',
-                                     fingerprint: true
                 }
+
+                archiveArtifacts artifacts: 'exp-2/tfplan, exp-2/tfplan.txt',
+                                 fingerprint: true
             }
         }
 
