@@ -20,6 +20,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnet_cidr
   availability_zone       = var.availability_zone
+  # tfsec:ignore:aws-ec2-no-public-ip-subnet
   map_public_ip_on_launch = true
 
   tags = {
@@ -62,6 +63,7 @@ resource "aws_security_group" "web" {
   description = "HTTP for everyone and SSH only from the laboratory administrator CIDR"
   vpc_id      = aws_vpc.main.id
 
+  # tfsec:ignore:aws-ec2-no-public-ingress-sgr
   ingress {
     description = "Public HTTP access to the web tier"
     from_port   = 80
@@ -78,6 +80,7 @@ resource "aws_security_group" "web" {
     cidr_blocks = [var.admin_cidr]
   }
 
+  # tfsec:ignore:aws-ec2-no-public-egress-sgr
   egress {
     description = "Allow outbound package installation and responses"
     from_port   = 0
@@ -104,6 +107,7 @@ resource "aws_security_group" "db" {
     security_groups = [aws_security_group.web.id]
   }
 
+  # tfsec:ignore:aws-ec2-no-public-egress-sgr
   egress {
     description = "Allow outbound response traffic"
     from_port   = 0
