@@ -5,6 +5,12 @@ pipeline {
         pollSCM('H/5 * * * *')
     }
 
+    parameters {
+        string(name: 'ADMIN_CIDR', defaultValue: '203.0.113.1/32', description: 'Your public IP in CIDR notation (e.g. 198.51.100.25/32).')
+        string(name: 'KEY_PAIR_NAME', defaultValue: 'spm-key', description: 'Existing EC2 key-pair name in AWS.')
+        string(name: 'AMI_ID', defaultValue: 'ami-0a24ce26f4e18d901', description: 'AMI ID for an Amazon Linux instance.')
+    }
+
     options {
         ansiColor('xterm')
         timestamps()
@@ -16,6 +22,9 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
         AWS_DEFAULT_REGION = 'ap-south-1'
         TF_IN_AUTOMATION = 'true'
+        TF_VAR_admin_cidr = "${params.ADMIN_CIDR}"
+        TF_VAR_key_pair_name = "${params.KEY_PAIR_NAME}"
+        TF_VAR_ami_id = "${params.AMI_ID}"
     }
 
     stages {
